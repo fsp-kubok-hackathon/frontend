@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 import { PAGES } from './consts/pages.consts';
 
-// Helper function to check token validity
 async function validateToken(token: string, url: string) {
   try {
     const res = await fetch('http://api.mzhn.fun:4200/api/account', {
@@ -10,13 +9,13 @@ async function validateToken(token: string, url: string) {
     });
     const data = await res.json();
     if (res.status === 200) {
-      return true; // Token is valid
+      return true; 
     }
     throw new Error(data.message);
   } catch (error) {
     // @ts-ignore
     console.error('Token validation error:', error.message);
-    return false; // Token is invalid or an error occurred
+    return false; 
   }
 }
 
@@ -28,7 +27,6 @@ export async function middleware(request: NextRequest) {
   const token = cookies.get('accessToken')?.value;
   const pathname = nextUrl.pathname;
 
-  // Check if path is prohibited for authenticated users
   if (prohibitedAuth.includes(pathname) && token) {
     const isValidToken = await validateToken(token, nextUrl.href);
     if (isValidToken) {
@@ -38,7 +36,6 @@ export async function middleware(request: NextRequest) {
     console.log('Invalid token, allowing access to auth pages');
   }
 
-  // Check if path requires authentication
   if (needAuth.includes(pathname) && !token) {
     console.log('No token, redirecting to sign-in');
     return NextResponse.redirect(new URL(PAGES.SIGN_IN, nextUrl));
@@ -51,7 +48,6 @@ export async function middleware(request: NextRequest) {
     console.log('Valid token, access granted');
   }
 
-  // Continue with the request for all other paths
   return NextResponse.next();
 }
 

@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
-
 export const Footer = ({ className }: { className?: string }) => {
   return (
     <div

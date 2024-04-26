@@ -40,11 +40,21 @@ const tickets: Ticket[] = [
   { id: '754745', status: 'open', date: '06/02/2024', user: 'Резанов Н. А.' },
 ];
 
-export default function Page() {
+export default function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const [searchQuery, setSearchQuery] = useState('');
   // const { data, error } = useTickets(searchQuery);
-  const start = 0;
-  const end = 10;
+
+  const page = searchParams["page"] ?? "1";
+  const perPage = searchParams["perPage"] ?? "10";
+
+  const start = (Number(page) - 1) * Number(perPage);
+  const end = start + Number(perPage);
+
+  // const response = await getData(Number(perPage) + 1, start);
   
   return (
     <main className="flex min-h-screen flex-col items-center">
