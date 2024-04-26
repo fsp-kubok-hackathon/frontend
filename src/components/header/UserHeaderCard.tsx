@@ -7,7 +7,6 @@ import { useLogout } from '@/hooks/useLogout';
 import { Skeleton } from '@/components/ui/skeleton';
 import RoleRequired from '../utils/RoleRequired';
 import { LOCAL_ROLES, ROLES } from '@/consts/roles.consts';
-import { PAGES } from '@/consts/pages.consts';
 
 export default function UserHeaderCard() {
   const { user, isLoading, loggedOut } = useProfile();
@@ -26,7 +25,7 @@ export default function UserHeaderCard() {
 
   if (loggedOut) {
     return (
-      <Link href={PAGES.SIGN_IN}>
+      <Link href="/sign-in">
         <Button>Вход</Button>
       </Link>
     );
@@ -46,9 +45,9 @@ export default function UserHeaderCard() {
             </p>
           </div>
 
-          <RoleRequired roles={[ROLES.ADMIN, ROLES.MODERATOR]}>
-            <Link href={PAGES.DASHBOARD}>
-              <Button>Панель управления</Button>
+          <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
+            <Link href="/account">
+              <Button>Личный кабинет</Button>
             </Link>
           </RoleRequired>
 
