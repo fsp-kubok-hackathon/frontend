@@ -29,12 +29,14 @@ import { Badge } from '../ui/badge';
 import { PAGES } from '@/consts/pages.consts';
 import Link from 'next/link';
 import { useTickets } from '@/hooks/useTickets';
+import { Ticket } from '@/lib/dto/tickets.dto';
+import { parseISO } from 'date-fns';
+import { format } from '@/lib/date-fns';
+import { LOCAL_TICKET_STATUSES, TICKET_STATUSES } from '@/consts/ticket.const';
 
-type Ticket = {
-  id: string;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  date: string;
-  author: string;
+const datef = (dateString: string) => {
+  const parsedDate = parseISO(dateString);
+  return format(parsedDate, 'dd.MM.yyyy');
 };
 
 export const columns: ColumnDef<Ticket>[] = [
@@ -52,10 +54,25 @@ export const columns: ColumnDef<Ticket>[] = [
         Статус <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <Badge>{row.getValue('status')}</Badge>,
+    cell: ({ row }) => (
+      <Badge>{LOCAL_TICKET_STATUSES[row.getValue('status') as TICKET_STATUSES]}</Badge>
+    ),
   },
   {
-    accessorKey: 'date',
+    id: 'date',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Дата <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    accessorFn: (row) => datef(row.startDate) + ' - ' + datef(row.endDate),
+  },
+  /*
+  {
+    accessorFn: (row) => row.startDate,
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -66,7 +83,6 @@ export const columns: ColumnDef<Ticket>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue('date')}</div>,
   },
-  /*
   {
     accessorKey: 'author',
     header: () => <div className="text-right">Автор</div>,
@@ -175,21 +191,26 @@ function SimpleTicketsTable({ data }) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <Link
+                    key={row.getValue('id')}
+                    href={`/ticket/${row.getValue('id')}`}
+                    legacyBehavior
+                  >
+                    <TableRow data-state={row.getIsSelected() && 'selected'}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </Link>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell

@@ -47,6 +47,7 @@ export class AuthService {
     }
 
     AccessTokenService.remove();
+    RefreshTokenService.remove();
   }
 
   static async refresh() {
