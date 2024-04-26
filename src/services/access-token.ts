@@ -9,6 +9,8 @@ export class AccessTokenService {
   }
 
   static set(value: string) {
+    console.log('SET', value)
+
     Cookies.set(ACCESS_TOKEN, value, {
       domain: 'localhost',
       expires: 1,

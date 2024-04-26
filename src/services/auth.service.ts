@@ -2,11 +2,9 @@ import { api } from '@/api/axios.config';
 import { AccessTokenService } from './access-token';
 import {
   AuthResponseDto,
-  ProfileDto,
   SignInDto,
   SignUpDto,
 } from '@/lib/dto/auth.dto';
-import { User } from '@/lib/types/user';
 
 export class AuthService {
   static async signIn({ login, password }: SignInDto) {
@@ -15,19 +13,21 @@ export class AuthService {
       password,
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       AccessTokenService.set(response.data.accessToken);
     }
   }
 
   static async signUp({
+    role,
     email,
     password,
     firstName,
     lastName,
     middleName,
   }: SignUpDto) {
-    const response = await api.post<AuthResponseDto>('/auth/sign-up', {
+    const response = await api.post<AuthResponseDto>(`/auth/${role}/sign-up`, {
+      handle: email,
       email,
       password,
       firstName,
