@@ -1,7 +1,11 @@
+"use client";
+import { TicketsTable } from "@/components/tickets-table";
+
 function EmployeeMainPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-20">
-      Hello from EmployeeMainPage!
+    <div className="flex min-h-screen items-center justify-center p-20 flex-col">
+      <h1 className="text-4xl font-bold">Мои командировки</h1>
+      <TicketsTable />
     </div>
   );
 }

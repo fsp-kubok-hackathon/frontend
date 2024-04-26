@@ -4,6 +4,7 @@ export const PAGES = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   ACCOUNT: '/account',
+  UPLOAD: '/upload',
 };
 
 export const DASHBOARD: Record<string, string> = {
