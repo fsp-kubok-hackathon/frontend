@@ -6,6 +6,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReceiptUploadFormSchema } from '@/lib/forms/upload.form';
 import { FormField } from '@/components/ui/form';
+import ReportingRangepicker from '@/components/reporting-rangepicker';
 
 export default function Upload() {
   const form = useForm({
@@ -13,12 +14,15 @@ export default function Upload() {
   });
 
   // Отслеживаем содержимое receipts
-  const receipts = form.watch('receipts');
+  const [receipts, dates] = form.watch(['receipts', 'dates']);
 
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log(data);
     // TODO:
   };
+
+  const isSubmitDisabled =
+    !receipts || receipts.length === 0 || !dates || !dates.from || !dates.to;
 
   return (
     <>
@@ -31,13 +35,19 @@ export default function Upload() {
             <h1 className="text-4xl font-bold">Загрузка отчетности</h1>
             <FormField
               control={form.control}
+              name="dates"
+              render={({ field }) => {
+                return <ReportingRangepicker {...field} />;
+              }}
+            />
+            <FormField
+              control={form.control}
               name="receipts"
               render={({ field }) => {
-                console.log(field);
                 return <ReceiptUpload {...field} />;
               }}
             />
-            <Button type="submit" disabled={!receipts || receipts.length === 0}>
+            <Button type="submit" disabled={isSubmitDisabled}>
               Отправить
             </Button>
           </form>
