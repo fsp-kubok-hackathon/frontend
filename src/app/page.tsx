@@ -12,7 +12,7 @@ export default function Home() {
           <div className="grid grid-cols-[1.5fr_1fr] w-3/5 items-center py-16 gap-64">
             <div>
               <p className="font-bold text-3xl text-purple-800 mb-4">
-                <span className="border-b-4">SLADKOEZHKOVO</span>
+                <span className="border-b-4">business-trip</span>
               </p>
               <p className="text-justify">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -22,12 +22,6 @@ export default function Home() {
               </p>
             </div>
             <div>
-              <Image
-                src="/sladkoezhkovo.jpeg"
-                width={200}
-                height={200}
-                alt="logo"
-              />
             </div>
           </div>
         </div>
