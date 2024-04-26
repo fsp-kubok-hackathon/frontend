@@ -19,14 +19,8 @@ export default function DashboardSidebar() {
     <aside className="border-r-2 px-8 flex flex-col gap-4">
       <Link href={PAGES.ROOT}>
         <div className="flex flex-col justify-center items-center">
-          <Image
-            src="/sladkoezhkovo.jpeg"
-            width={128}
-            height={128}
-            alt={'logo'}
-          />
 
-          <p className="text-purple-700 font-bold">SLADKOEZHKOVO / ADMIN</p>
+          <p className="text-purple-700 font-bold">business-trip / ADMIN</p>
         </div>
       </Link>
       <hr />
