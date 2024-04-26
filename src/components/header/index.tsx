@@ -41,7 +41,7 @@ function Header({ className }: Props) {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/reports" legacyBehavior passHref>
+              <Link href="/ticket" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Тикеты (страница для администрации)
                 </NavigationMenuLink>
