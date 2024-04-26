@@ -1,10 +1,7 @@
 import { api } from '@/api/axios.config';
 import { AccessTokenService } from './access-token';
-import {
-  AuthResponseDto,
-  SignInDto,
-  SignUpDto,
-} from '@/lib/dto/auth.dto';
+import { AuthResponseDto, SignInDto, SignUpDto } from '@/lib/dto/auth.dto';
+import { RefreshTokenService } from './refresh-token';
 
 export class AuthService {
   static async signIn({ login, password }: SignInDto) {
@@ -15,6 +12,7 @@ export class AuthService {
 
     if (response.status === 201) {
       AccessTokenService.set(response.data.accessToken);
+      RefreshTokenService.set(response.data.refreshToken);
     }
   }
 
@@ -37,6 +35,7 @@ export class AuthService {
 
     if (response.status === 200) {
       AccessTokenService.set(response.data.accessToken);
+      RefreshTokenService.set(response.data.refreshToken);
     }
   }
 
@@ -51,9 +50,14 @@ export class AuthService {
   }
 
   static async refresh() {
-    const response = await api.get<AuthResponseDto>('/auth/refresh');
+    const refreshToken = RefreshTokenService.get();
+
+    const response = await api.post<AuthResponseDto>('/auth/refresh', {
+      refreshToken,
+    });
     if (response.status === 200) {
       AccessTokenService.set(response.data.accessToken);
+      RefreshTokenService.set(response.data.refreshToken);
     }
     return response.data;
   }

@@ -7,6 +7,7 @@ export type SignUpDto = z.infer<typeof SignUpForm>;
 
 export type AuthResponseDto = {
   accessToken: string;
+  refreshToken: string;
 };
 
 export type ProfileDto = {
