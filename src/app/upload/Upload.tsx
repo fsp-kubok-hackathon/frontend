@@ -7,17 +7,37 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ReceiptUploadFormSchema } from '@/lib/forms/upload.form';
 import { FormField } from '@/components/ui/form';
 import ReportingRangepicker from '@/components/reporting-rangepicker';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { UploadTicketDto } from '@/lib/types/upload-ticket.dto';
+import { TicketsService } from '@/services/tickets.service';
+import { useRouter } from 'next/navigation';
 
 export default function Upload() {
   const form = useForm({
     resolver: zodResolver(ReceiptUploadFormSchema),
   });
 
-  // Отслеживаем содержимое receipts
   const [receipts, dates] = form.watch(['receipts', 'dates']);
 
-  const onSubmit: SubmitHandler<any> = (data) => {
-    console.log(data);
+  const { push } = useRouter();
+
+  const { mutate } = useMutation({
+    mutationKey: ['uploadTicket'],
+    mutationFn: TicketsService.upload,
+    onSuccess: () => {
+      console.log('Success');
+      // form.reset();
+      toast.success(`Успешно создана заявка!`);
+      push('/');
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
+
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    await mutate(data);
     // TODO:
   };
 

@@ -55,7 +55,7 @@ export class AuthService {
     const response = await api.post<AuthResponseDto>('/auth/refresh', {
       refreshToken,
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
       AccessTokenService.set(response.data.accessToken);
       RefreshTokenService.set(response.data.refreshToken);
     }
