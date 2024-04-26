@@ -41,16 +41,23 @@ function Header({ className }: Props) {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/join" legacyBehavior passHref>
+              <Link href="/ticket" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Присоединиться
+                  Тикеты (страница для администрации)
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/join" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Присоединиться
+                  Формирование отчета 
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/join" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Мои командировки 
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
