@@ -10,7 +10,6 @@ export class RefreshTokenService {
 
   static set(value: string) {
     Cookies.set(REFRESH_TOKEN, value, {
-      domain: 'localhost',
       expires: 1,
       sameSite: 'strict',
     });
