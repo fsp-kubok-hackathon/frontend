@@ -11,7 +11,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useTicket } from '@/hooks/useTicket';
-import { datef, rangeDate, ticketStatus } from '@/lib/utils';
+import { datef, fio, rangeDate, ticketStatus } from '@/lib/utils';
 import { ArrowDownToLine, BookOpenCheck } from 'lucide-react';
 import { Metadata } from 'next';
 
@@ -56,7 +56,7 @@ export function Ticket({ params: { id } }: Props) {
               <CardTitle>ФИО</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>{ticket.user}</p>
+              <p>{fio(data.user)}</p>
             </CardContent>
           </Card>
         </div>

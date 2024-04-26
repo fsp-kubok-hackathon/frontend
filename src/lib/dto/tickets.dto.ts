@@ -13,6 +13,18 @@ export type Ticket = {
 export type TicketDto = {
   id: string,
   userId: string,
+  user: {
+    id: string,
+    handle: string,
+    email: string,
+    role: string,
+    lastName: string,
+    firstName: string,
+    middleName: string,
+    password: string,
+    createdAt: string,
+    updatedAt: string | null
+}
   startDate: string,
   endDate: string,
   status: string,
