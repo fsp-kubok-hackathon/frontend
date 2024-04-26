@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 import { PAGES } from './consts/pages.consts';
 
-const HOST = 'http://api.mzhn.fun:4200/api';
+const HOST = 'https://api.mzhn.fun/api';
 
 // Helper function to check token validity
 async function validateTokenAndRefresh(
