@@ -1,5 +1,5 @@
 import { api } from '@/api/axios.config';
-import { TicketDto, TicketsDto } from '@/lib/dto/tickets.dto';
+import { RecieptsDto, TicketDto, TicketsDto } from '@/lib/dto/tickets.dto';
 import { UploadTicketDto } from '@/lib/types/upload-ticket.dto';
 import { formatISO } from 'date-fns';
 
@@ -28,6 +28,11 @@ export class TicketsService {
 
   static async getById(id: string): Promise<TicketDto> {
     const response = await api.get<TicketDto>(`/tickets/${id}`);
+    return response.data;
+  }
+
+  static async getRecieptsById(id: string): Promise<RecieptsDto> {
+    const response = await api.get<RecieptsDto>(`/tickets/${id}/reciepts`);
     return response.data;
   }
 }

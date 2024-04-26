@@ -40,3 +40,17 @@ export type TicketDto = {
 };
 
 export type TicketsDto = Ticket[];
+
+
+type Reciept = {
+  amount: string,
+  fn: string,
+  fp: string,
+  paidAt: string,
+  purpose: string,
+  imageLink: string,
+  createdAt: string,
+  updatedAt: string | null,
+}
+
+export type RecieptsDto = Reciept[];

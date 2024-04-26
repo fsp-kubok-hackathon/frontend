@@ -1,15 +1,18 @@
 'use client';
 
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useReciepts } from '@/hooks/useReciepts';
 import { useTicket } from '@/hooks/useTicket';
 import { datef, fio, rangeDate, ticketStatus } from '@/lib/utils';
 import { ArrowDownToLine, BookOpenCheck } from 'lucide-react';
@@ -30,8 +33,9 @@ const ticket = {
 
 export function Ticket({ params: { id } }: Props) {
   const { data, isLoading } = useTicket(id);
+  const { data: reciepts, isLoading: recieptsIsLoading } = useReciepts(id);
 
-  if (isLoading) {
+  if (isLoading || recieptsIsLoading) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center">
         Loading...
@@ -39,7 +43,7 @@ export function Ticket({ params: { id } }: Props) {
     );
   }
 
-  if (!data) {
+  if (!data || !reciepts) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center">
         Ошибка при запросе данных
@@ -126,14 +130,27 @@ export function Ticket({ params: { id } }: Props) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {/* {tickets.map((ticket) => (
-                  <TableRow key={ticket.id}>
-                    <TableCell className="font-medium">{ticket.id}</TableCell>
-                    <TableCell>{ticket.status}</TableCell>
-                    <TableCell>{ticket.date}</TableCell>
-                    <TableCell className="text-right">{ticket.user}</TableCell>
+              {reciepts.map((reciept) => {
+                let imageLink = new URL(reciept.imageLink);
+
+                if (imageLink.host === 'minio:9000') {
+                  imageLink.host = 'mzhn.fun:9000'
+                }
+
+                return (
+                  <TableRow key={reciept.createdAt}>
+                    <TableCell className="hidden sm:table-cell">
+                      <img
+                        alt="Product image"
+                        className="aspect-square rounded-md object-cover"
+                        height="64"
+                        src={imageLink.toString()}
+                        width="64"
+                      />
+                    </TableCell>
                   </TableRow>
-                ))} */}
+                );
+              })}
             </TableBody>
           </Table>
         </div>
