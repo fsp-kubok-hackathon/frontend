@@ -29,6 +29,9 @@ import {
 } from '@/components/ui/card';
 import Link from 'next/link';
 import { PAGES } from '@/consts/pages.consts';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { LOCAL_ROLES, ROLES } from '@/consts/roles.consts';
+
 
 export default function SignUp() {
   const form = useForm<z.infer<typeof SignUpForm>>({
@@ -38,10 +41,10 @@ export default function SignUp() {
   const { push } = useRouter();
 
   const { mutate } = useMutation({
-    mutationKey: ['auth'],
+    mutationKey: ['signUp'],
     mutationFn: (data: SignUpDto) => AuthService.signUp(data),
     onSuccess: () => {
-      toast('Успешная авторизация');
+      toast('Успешная регистрация');
       form.reset();
       push('/');
     },
@@ -67,6 +70,34 @@ export default function SignUp() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-4"
               >
+                              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Вы являетесь</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Выберите роль" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={ROLES.ACCOUNTANT}>
+                          {LOCAL_ROLES[ROLES.ACCOUNTANT]}
+                        </SelectItem>
+                        <SelectItem value={ROLES.EMPLOYEE}>
+                          {LOCAL_ROLES[ROLES.EMPLOYEE]}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
                 <FormField
                   control={form.control}
                   name="email"
