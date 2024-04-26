@@ -10,4 +10,21 @@ export type Ticket = {
   author: string;
 };
 
+export type TicketDto = {
+  id: string,
+  userId: string,
+  startDate: string,
+  endDate: string,
+  status: string,
+  report: {
+    id: string,
+    fileName: string,
+    addedBy: {},
+    createdAt: string,
+    updatedAt: string
+  },
+  createdAt: string,
+  updatedAt: string
+};
+
 export type TicketsDto = Ticket[];

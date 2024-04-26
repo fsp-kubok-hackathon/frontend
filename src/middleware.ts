@@ -27,7 +27,7 @@ async function validateTokenAndRefresh(
         body: JSON.stringify({ refreshToken }),
       });
       const refreshData = await refreshRes.json();
-      if (refreshRes.status === 200) {
+      if (refreshRes.status === 201) {
         return { isValid: true, newTokens: refreshData }; // Return new token
       }
     }
