@@ -33,16 +33,13 @@ export default function UserHeaderCard() {
           </>
         )}
 
-        {isLoading ? (
+        {!isLoading && (
           <>
             <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
               <Link href={PAGES.ACCOUNT}>
                 <Button>Личный кабинет</Button>
               </Link>
             </RoleRequired>
-          </>
-        ) : (
-          <>
             {!user ? (
               <Link href={PAGES.SIGN_IN}>
                 <Button>Вход</Button>
