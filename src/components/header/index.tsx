@@ -27,7 +27,7 @@ function Header({ className }: Props) {
           <Link href={'/'} className="flex-none flex items-center space-x-4">
             <Image src="/Vector.png" alt="logo" width={20} height={20} />
             <p className="font-bold text-2xl ">
-              <span>Название</span>
+              <span>ОтчетЭксперт</span>
             </p>
           </Link>
           <div className="flex-none">
@@ -53,7 +53,7 @@ function Header({ className }: Props) {
               >
                 <Image src="/Vector.png" alt="logo" width={20} height={20} />
                 <p className="font-bold text-2xl ">
-                  <span>Название</span>
+                  <span>ОтчетЭксперт</span>
                 </p>
               </Link>
               <div className="flex-none">

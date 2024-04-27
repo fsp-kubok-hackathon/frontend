@@ -1,10 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -16,20 +15,12 @@ import {
 } from '@/components/ui/table';
 import { useReciepts } from '@/hooks/useReciepts';
 import { useTicket } from '@/hooks/useTicket';
-import { datef, fio, rangeDate, ticketStatus } from '@/lib/utils';
-import {
-  ArrowDownToLine,
-  BookOpenCheck,
-  CalendarDays,
-  Download,
-  FileCheck,
-  FileUp,
-  FileX,
-} from 'lucide-react';
-import { Metadata } from 'next';
-import TicketCard from '../../../components/ticket/ticket-card';
+import { cn, datef, fio, ticketStatus } from '@/lib/utils';
+import { CalendarDays, Download, FileCheck, FileUp } from 'lucide-react';
 import { UploadReport } from './UploadReport';
-import Link from 'next/link';
+import RoleRequired from '@/components/utils/RoleRequired';
+import { ROLES } from '@/consts/roles.consts';
+import TicketCard from '@/components/ticket/ticket-card';
 
 type Props = {
   params: {
@@ -43,6 +34,48 @@ const ticket = {
   date: '04/02/2024',
   user: 'Евтеев Н. А.',
 };
+
+function PeriodCard({
+  isLoading,
+  startDate,
+  endDate,
+  className,
+}: {
+  isLoading: boolean;
+  startDate?: string;
+  endDate?: string;
+  className?: string;
+}) {
+  return (
+    <TicketCard className={cn(className, 'row-start-2')} title="Период">
+      {isLoading ? (
+        <Skeleton className="w-[60px] h-4" />
+      ) : (
+        <div>
+          <div className="flex justify-around text-muted-foreground pb-4">
+            <div>От</div>
+            <div>До</div>
+          </div>
+          <div className="flex justify-around gap-x-4">
+            <Card className="flex items-center gap-x-3 py-3 px-3">
+              <div>
+                <CalendarDays />
+              </div>
+              <div>{datef(startDate || '', 'dd.MM.yyyy')}</div>
+            </Card>
+            <div className="flex items-center">-</div>
+            <Card className="flex items-center gap-x-3 py-3 px-3">
+              <div>
+                <CalendarDays />
+              </div>
+              <div>{datef(endDate || '', 'dd.MM.yyyy')}</div>
+            </Card>
+          </div>
+        </div>
+      )}
+    </TicketCard>
+  );
+}
 
 export function Ticket({ params: { id } }: Props) {
   const { data, isLoading } = useTicket(id);
@@ -63,6 +96,11 @@ export function Ticket({ params: { id } }: Props) {
   //     </main>
   //   );
   // }
+
+  const periodCardsProps = {
+    isLoading,
+    ...(data || {}),
+  };
 
   return (
     <main className="flex min-h-full min-w-full flex-col items-center">
@@ -104,58 +142,39 @@ export function Ticket({ params: { id } }: Props) {
             <p>{data && datef(data.createdAt, 'dd.MM.yyyy')}</p>
           )}
         </TicketCard>
-        <TicketCard className="md:col-span-3 row-start-2" title="Период">
-          {isLoading ? (
-            <Skeleton className="w-[60px] h-4" />
-          ) : (
-            <div>
-              <div className="flex justify-around text-muted-foreground pb-4">
-                <div>От</div>
-                <div>До</div>
-              </div>
-              <div className="flex justify-around gap-x-4">
-                <Card className="flex items-center gap-x-3 py-3 px-3">
-                  <div>
-                    <CalendarDays />
-                  </div>
-                  <div>{data && datef(data.startDate, 'dd.MM.yyyy')}</div>
-                </Card>
-                <div className="flex items-center">-</div>
-                <Card className="flex items-center gap-x-3 py-3 px-3">
-                  <div>
-                    <CalendarDays />
-                  </div>
-                  <div>{data && datef(data.startDate, 'dd.MM.yyyy')}</div>
-                </Card>
-              </div>
-            </div>
-          )}
-        </TicketCard>
-        <TicketCard
-          className="md:col-span-2 md:col-start-4 md:row-start-2"
-          title="Выписка"
-        >
-          <div className="py-8">
-            {data?.report ? (
-              <Button variant="link" className="flex gap-x-4">
-                <FileCheck height={36} width={36} />
-                <Link
-                  className="text-2xl font-normal"
-                  href={`http://mzhn.fun:9000/images/${data.report.fileName}`}
-                >
-                  Скачать
-                </Link>
-              </Button>
-            ) : (
-              <UploadReport ticketId={id}>
+        <RoleRequired roles={[ROLES.EMPLOYEE]}>
+          <PeriodCard className="md:col-span-5 " {...periodCardsProps} />
+        </RoleRequired>
+        <RoleRequired roles={[ROLES.ACCOUNTANT]}>
+          <PeriodCard className="md:col-span-3" {...periodCardsProps} />
+        </RoleRequired>
+        <RoleRequired roles={[ROLES.ACCOUNTANT]}>
+          <TicketCard
+            className="md:col-span-2 md:col-start-4 md:row-start-2"
+            title="Выписка"
+          >
+            <div className="py-8">
+              {data?.report ? (
                 <Button variant="link" className="flex gap-x-4">
-                  <FileUp height={36} width={36} />
-                  <p className="text-2xl font-normal">Загрузить</p>
+                  <FileCheck height={36} width={36} />
+                  <Link
+                    className="text-2xl font-normal"
+                    href={`http://mzhn.fun:9000/images/${data.report.fileName}`}
+                  >
+                    Скачать
+                  </Link>
                 </Button>
-              </UploadReport>
-            )}
-          </div>
-        </TicketCard>
+              ) : (
+                <UploadReport ticketId={id}>
+                  <Button variant="link" className="flex gap-x-4">
+                    <FileUp height={36} width={36} />
+                    <p className="text-2xl font-normal">Загрузить</p>
+                  </Button>
+                </UploadReport>
+              )}
+            </div>
+          </TicketCard>
+        </RoleRequired>
         <div className="md:col-span-5 md:row-start-3">
           <Table className="w-full">
             <TableHeader>

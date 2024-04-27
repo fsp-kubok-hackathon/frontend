@@ -2,11 +2,9 @@
 
 import TicketCard from '@/components/ticket/ticket-card';
 import { Avatar } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -14,14 +12,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useProfile } from '@/hooks/useProfile';
 import { useState } from 'react';
-
-interface User {
-  lastname: string;
-  firstname: string;
-  middlename: string;
-  email: string;
-  role: string;
-}
 
 export default function Page() {
   const [isEdit, setEdit] = useState<boolean>(false);

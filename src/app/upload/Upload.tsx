@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import ReceiptUpload from '@/components/receipt-upload';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,6 @@ import { FormField } from '@/components/ui/form';
 import ReportingRangepicker from '@/components/reporting-rangepicker';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { UploadTicketDto } from '@/lib/types/upload-ticket.dto';
 import { TicketsService } from '@/services/tickets.service';
 import { useRouter } from 'next/navigation';
 

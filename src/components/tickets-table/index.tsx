@@ -24,7 +24,6 @@ import {
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-// import { Checkbox } from "@/components/ui/checkbox"
 import {
   Table,
   TableBody,
@@ -37,13 +36,17 @@ import { Badge } from '../ui/badge';
 import { PAGES } from '@/consts/pages.consts';
 import Link from 'next/link';
 import { useTickets } from '@/hooks/useTickets';
-import { Ticket } from '@/lib/dto/tickets.dto';
-import { rangeDate, ticketStatus } from '@/lib/utils';
+import { Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
+import { fio, rangeDate, ticketStatus } from '@/lib/utils';
+import { Skeleton } from '../ui/skeleton';
+import RoleRequired from '../utils/RoleRequired';
+import { ROLES } from '@/consts/roles.consts';
 
-export const columns: ColumnDef<Ticket>[] = [
+export const columnsSimple: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
+    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
   },
   {
     accessorKey: 'status',
@@ -69,9 +72,28 @@ export const columns: ColumnDef<Ticket>[] = [
     ),
     accessorFn: (row) => rangeDate(row),
   },
-  /*
+];
+
+export const columnsExtended: ColumnDef<TicketExtended>[] = [
   {
-    accessorFn: (row) => row.startDate,
+    accessorKey: 'id',
+    header: 'ID',
+    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Статус <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <Badge>{ticketStatus(row.getValue('status'))}</Badge>,
+  },
+  {
+    id: 'date',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -80,20 +102,19 @@ export const columns: ColumnDef<Ticket>[] = [
         Дата <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <div>{row.getValue('date')}</div>,
+    accessorFn: (row) => rangeDate(row),
   },
   {
-    accessorKey: 'author',
+    accessorKey: 'user',
     header: () => <div className="text-right">Автор</div>,
     cell: ({ row }) => (
-      <div className="text-right">{row.getValue('author')}</div>
+      <div className="text-right">{fio(row.getValue('user'))}</div>
     ),
   },
-  */
 ];
 
 //@ts-ignore
-function SimpleTicketsTable({ data }) {
+function SimpleTicketsTable({ columns, data }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -121,19 +142,17 @@ function SimpleTicketsTable({ data }) {
     },
   });
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Link href={PAGES.UPLOAD}>
-          <Button variant={'outline'}>
-            <CirclePlus className="mr-2" />
-            Добавить
-          </Button>
-        </Link>
+        <RoleRequired roles={[ROLES.EMPLOYEE]}>
+          <Link href={PAGES.UPLOAD}>
+            <Button variant={'outline'}>
+              <CirclePlus className="mr-2" />
+              Добавить
+            </Button>
+          </Link>
+        </RoleRequired>
         {/*
 <Input
           placeholder="Filter emails..."
@@ -179,12 +198,18 @@ function SimpleTicketsTable({ data }) {
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                      {!data ? (
+                        <Skeleton className="w-[100px] h-4" />
+                      ) : (
+                        <>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </>
+                      )}
                     </TableHead>
                   );
                 })}
@@ -200,7 +225,11 @@ function SimpleTicketsTable({ data }) {
                     href={`/ticket/${row.getValue('id')}`}
                     legacyBehavior
                   >
-                    <TableRow data-state={row.getIsSelected() && 'selected'}>
+                    <TableRow
+                      key={row.getValue('id')}
+                      data-state={row.getIsSelected() && 'selected'}
+                      className="cursor-pointer"
+                    >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id}>
                           {flexRender(
@@ -214,14 +243,19 @@ function SimpleTicketsTable({ data }) {
                 );
               })
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
+              <>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableCell key={header.id}>
+                          <Skeleton className="w-[100px] h-4" />
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </>
             )}
           </TableBody>
         </Table>
@@ -251,12 +285,14 @@ function SimpleTicketsTable({ data }) {
   );
 }
 
-export function TicketsTable() {
-  const { data, isLoading } = useTickets();
+type Props = {
+  all?: boolean;
+};
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+export function TicketsTable({ all }: Props) {
+  const { data } = useTickets(all);
 
-  return <SimpleTicketsTable data={data} />;
+  const columns = all ? columnsExtended : columnsSimple;
+
+  return <SimpleTicketsTable data={data} columns={columns} />;
 }

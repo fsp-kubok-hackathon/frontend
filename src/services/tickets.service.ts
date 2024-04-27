@@ -1,6 +1,9 @@
 import { api } from '@/api/axios.config';
+import { ROLES } from '@/consts/roles.consts';
+import { ProfileDto } from '@/lib/dto/auth.dto';
 import { RecieptsDto, TicketDto, TicketsDto } from '@/lib/dto/tickets.dto';
 import { UploadTicketDto } from '@/lib/types/upload-ticket.dto';
+import { useQuery } from '@tanstack/react-query';
 import { formatISO } from 'date-fns';
 
 export class TicketsService {
@@ -35,6 +38,11 @@ export class TicketsService {
 
   static async getRecieptsById(id: string): Promise<RecieptsDto> {
     const response = await api.get<RecieptsDto>(`/tickets/${id}/reciepts`);
+    return response.data;
+  }
+
+  static async getAll(): Promise<TicketsDto> {
+    const response = await api.get<TicketsDto>('/tickets');
     return response.data;
   }
 }

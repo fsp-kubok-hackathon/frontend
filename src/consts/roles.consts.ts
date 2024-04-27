@@ -1,6 +1,6 @@
 export enum ROLES {
-  EMPLOYEE = 'employee',
-  ACCOUNTANT = 'accountant',
+  EMPLOYEE = 'EMPLOYEE',
+  ACCOUNTANT = 'ACCOUNTANT',
 }
 
 export const LOCAL_ROLES: Record<ROLES, string> = {
