@@ -5,10 +5,10 @@ export const Footer = ({ className }: { className?: string }) => {
     <div
       className={cn(
         className,
-        'py-4 bg-slate-900 text-white flex flex-col items-center justify-center',
+        'py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white flex flex-col items-center justify-center',
       )}
     >
-      <p>Продукт был разработан mzhn team 2024</p>
+      <p className='font-middle'>Продукт был разработан mzhn team 2024</p>
     </div>
   );
 };

@@ -25,8 +25,8 @@ function Header({ className }: Props) {
       <header className={cn('', className)}>
         <nav className="hidden md:flex justify-between py-2 md:px-12 lg:px-48 border border-b-1 items-center space-x-12">
           <Link href={'/'} className="flex-none flex items-center space-x-4">
-            <Image src="/Vector.png" alt="logo" width={20} height={20} />
-            <p className="font-bold text-2xl ">
+            {/* <Image src="/Vector.png" alt="logo" width={20} height={20} /> */}
+            <p className="font-black text-white text-xl bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-full">
               <span>ОтчетЭксперт</span>
             </p>
           </Link>
@@ -52,7 +52,7 @@ function Header({ className }: Props) {
                 className="flex-none flex items-center space-x-4"
               >
                 <Image src="/Vector.png" alt="logo" width={20} height={20} />
-                <p className="font-bold text-2xl ">
+                <p className="text-2xl">
                   <span>ОтчетЭксперт</span>
                 </p>
               </Link>
