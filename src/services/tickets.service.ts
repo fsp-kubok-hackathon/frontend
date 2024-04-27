@@ -1,5 +1,5 @@
 import { api } from '@/api/axios.config';
-import { TicketsDto } from '@/lib/dto/tickets.dto';
+import { RecieptsDto, TicketDto, TicketsDto } from '@/lib/dto/tickets.dto';
 import { UploadTicketDto } from '@/lib/types/upload-ticket.dto';
 import { formatISO } from 'date-fns';
 
@@ -14,6 +14,8 @@ export class TicketsService {
       formData.append(`file${i}`, f);
     });
 
+    console.log(receipts);
+
     await api.post('/tickets/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -23,6 +25,16 @@ export class TicketsService {
 
   static async get(): Promise<TicketsDto> {
     const response = await api.get<TicketsDto>('/account/tickets');
+    return response.data;
+  }
+
+  static async getById(id: string): Promise<TicketDto> {
+    const response = await api.get<TicketDto>(`/tickets/${id}`);
+    return response.data;
+  }
+
+  static async getRecieptsById(id: string): Promise<RecieptsDto> {
+    const response = await api.get<RecieptsDto>(`/tickets/${id}/reciepts`);
     return response.data;
   }
 }

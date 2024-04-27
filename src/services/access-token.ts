@@ -10,7 +10,6 @@ export class AccessTokenService {
 
   static set(value: string) {
     Cookies.set(ACCESS_TOKEN, value, {
-      domain: 'localhost',
       expires: 1,
       sameSite: 'strict',
     });

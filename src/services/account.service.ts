@@ -8,6 +8,7 @@ export class AccountService {
     return response.data;
   }
 
+  /*
   static async updateAvatar(data): Promise<UpdateAvatarResponse> {
     const response = await api.patch<UpdateAvatarResponse>(
       '/account/avatar',
@@ -15,4 +16,5 @@ export class AccountService {
     );
     return response.data;
   }
+  */
 }

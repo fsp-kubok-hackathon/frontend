@@ -30,14 +30,7 @@ import { PAGES } from '@/consts/pages.consts';
 import Link from 'next/link';
 import { useTickets } from '@/hooks/useTickets';
 import { Ticket } from '@/lib/dto/tickets.dto';
-import { parseISO } from 'date-fns';
-import { format } from '@/lib/date-fns';
-import { LOCAL_TICKET_STATUSES, TICKET_STATUSES } from '@/consts/ticket.const';
-
-const datef = (dateString: string) => {
-  const parsedDate = parseISO(dateString);
-  return format(parsedDate, 'dd.MM.yyyy');
-};
+import { rangeDate, ticketStatus } from '@/lib/utils';
 
 export const columns: ColumnDef<Ticket>[] = [
   {
@@ -54,9 +47,7 @@ export const columns: ColumnDef<Ticket>[] = [
         Статус <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <Badge>{LOCAL_TICKET_STATUSES[row.getValue('status') as TICKET_STATUSES]}</Badge>
-    ),
+    cell: ({ row }) => <Badge>{ticketStatus(row.getValue('status'))}</Badge>,
   },
   {
     id: 'date',
@@ -68,7 +59,7 @@ export const columns: ColumnDef<Ticket>[] = [
         Дата <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    accessorFn: (row) => datef(row.startDate) + ' - ' + datef(row.endDate),
+    accessorFn: (row) => rangeDate(row),
   },
   /*
   {

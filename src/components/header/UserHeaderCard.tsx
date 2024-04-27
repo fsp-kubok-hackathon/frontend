@@ -34,14 +34,14 @@ export default function UserHeaderCard() {
   return (
     <div>
       {user && (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-col md:flex-row">
           <div className="">
             {/* <p className="text-right">{fio(user)}</p> */}
-            <p className="text-right">
+            <p className="text-center md:text-right">
               {user.lastName} {user.firstName} {user.middleName}
             </p>
-            <p className="text-muted-foreground text-right">
-              @{user.handle} / {LOCAL_ROLES[user.role] || user.role}
+            <p className="text-muted-foreground text-center md:text-right">
+              {user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
             </p>
           </div>
 
