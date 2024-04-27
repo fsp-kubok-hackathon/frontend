@@ -12,13 +12,14 @@ type Props = {
   title: string;
   children: ReactNode;
   className?: string;
+  titleSize?: string;
 };
 
-function TicketCard({ title, className, children }: Props) {
+function TicketCard({ title, className, children, titleSize }: Props) {
   return (
     <CardComponent className={cn(className)}>
       <CardHeader>
-        <CardTitle className="flex justify-center font-normal">
+        <CardTitle className={'flex justify-center font-normal'}>
           {title}
         </CardTitle>
       </CardHeader>

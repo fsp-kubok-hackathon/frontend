@@ -1,14 +1,7 @@
 'use client';
 
+import TicketCard from '@/components/ticket/ticket-card';
 import { Avatar } from '@/components/ui/avatar';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useProfile } from '@/hooks/useProfile';
 import { useState } from 'react';
 
@@ -18,16 +11,40 @@ export default function Page() {
   const { user } = useProfile();
 
   return (
-    <main className="flex min-h-screen flex-col items-center">
-      <Card className="mt-20">
-        <CardHeader>
-          <CardTitle>Профиль</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-row gap-3 items-center">
-          <Avatar className="bg-slate-500"></Avatar>
-          <p>{user?.email}</p>
-        </CardContent>
-      </Card>
+    <main className="flex min-h-full min-w-full flex-col items-center mt-20">
+      <div>
+        <TicketCard title="Профиль">
+          <div className="flex items-center ">
+            <Avatar className="bg-slate-500 mr-5" />
+            <p className="text-lg">{user?.email}</p>
+          </div>
+        </TicketCard>
+        <TicketCard title="Детальная информация" className="mt-5">
+          <div className="flex flex-col gap-2  items-center text-lg">
+            <div className="text-center">
+              <p className="text-sm text-slate-500 font-medium">Фамилия</p>
+              <p>{user?.lastName}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-slate-500 font-medium">Имя</p>
+              <p>{user?.firstName}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-slate-500 font-medium">Отчество</p>
+              <p>{user?.middleName}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-slate-500 font-medium">Эл. почта</p>
+              <p>{user?.email}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-slate-500 font-medium">Роль</p>
+              <p>{user?.role}</p>
+            </div>
+          </div>
+        </TicketCard>
+      </div>
+      {/*
       <Card className="mt-10">
         <CardHeader>
           <CardTitle>Детальная информация</CardTitle>
@@ -113,8 +130,8 @@ export default function Page() {
             Изменить
           </Button>
         </CardFooter>
-        */}
-      </Card>
+        *
+      </Card> */}
     </main>
   );
 }

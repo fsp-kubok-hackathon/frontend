@@ -13,7 +13,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpDown,
+  ChevronLast,
+  ChevronLeft,
+  ChevronRight,
+  CirclePlus,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -139,7 +147,10 @@ function SimpleTicketsTable({ columns, data }) {
       <div className="flex items-center py-4">
         <RoleRequired roles={[ROLES.EMPLOYEE]}>
           <Link href={PAGES.UPLOAD}>
-            <Button>Добавить</Button>
+            <Button variant={'outline'}>
+              <CirclePlus className="mr-2" />
+              Добавить
+            </Button>
           </Link>
         </RoleRequired>
         {/*
@@ -250,22 +261,23 @@ function SimpleTicketsTable({ columns, data }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
+        <div className="space-x-2 flex items-center">
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            &lt;
+            <ChevronLeft />
           </Button>
+          <span>0 из 0</span>
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            &gt;
+            <ChevronRight />
           </Button>
         </div>
       </div>
