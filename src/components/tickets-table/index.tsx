@@ -38,11 +38,7 @@ export const columnsSimple: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
-    cell: ({ row }) => (
-      <Link className="hover:underline" href={`/ticket/${row.getValue('id')}`}>
-        {row.getValue('id')}
-      </Link>
-    ),
+    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
   },
   {
     accessorKey: 'status',
@@ -74,11 +70,7 @@ export const columnsExtended: ColumnDef<TicketExtended>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
-    cell: ({ row }) => (
-      <Link className="hover:underline" href={`/ticket/${row.getValue('id')}`}>
-        {row.getValue('id')}
-      </Link>
-    ),
+    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
   },
   {
     accessorKey: 'status',
@@ -217,19 +209,26 @@ function SimpleTicketsTable({ columns, data }) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
                 return (
-                  <TableRow
+                  <Link
                     key={row.getValue('id')}
-                    data-state={row.getIsSelected() && 'selected'}
+                    href={`/ticket/${row.getValue('id')}`}
+                    legacyBehavior
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                    <TableRow
+                      key={row.getValue('id')}
+                      data-state={row.getIsSelected() && 'selected'}
+                      className="cursor-pointer"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </Link>
                 );
               })
             ) : (
