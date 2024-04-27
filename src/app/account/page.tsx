@@ -1,7 +1,9 @@
 'use client';
 
 import TicketCard from '@/components/ticket/ticket-card';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { LOCAL_ROLES } from '@/consts/roles.consts';
 import { useProfile } from '@/hooks/useProfile';
 import { useState } from 'react';
 
@@ -14,32 +16,58 @@ export default function Page() {
     <main className="flex min-h-full min-w-full flex-col items-center mt-20">
       <div>
         <TicketCard title="Профиль">
-          <div className="flex items-center ">
-            <Avatar className="bg-slate-500 mr-5" />
-            <p className="text-lg">{user?.email}</p>
+          <div className="flex items-center gap-x-5">
+            <Avatar>
+              <AvatarFallback>{user?.email.charAt(0)}</AvatarFallback>
+            </Avatar>
+            {!user ? (
+              <Skeleton className="w-[100px] h-4" />
+            ) : (
+              <p className="text-lg">{user?.email}</p>
+            )}
           </div>
         </TicketCard>
         <TicketCard title="Детальная информация" className="mt-5">
-          <div className="flex flex-col gap-2  items-center text-lg">
+          <div className="flex flex-col gap-y-2  items-center text-lg">
             <div className="text-center">
               <p className="text-sm text-slate-500 font-medium">Фамилия</p>
-              <p>{user?.lastName}</p>
+              {!user ? (
+                <Skeleton className="w-[150px] h-7 " />
+              ) : (
+                <p>{user?.lastName}</p>
+              )}
             </div>
             <div className="text-center">
               <p className="text-sm text-slate-500 font-medium">Имя</p>
-              <p>{user?.firstName}</p>
+              {!user ? (
+                <Skeleton className="w-[150px] h-7 " />
+              ) : (
+                <p>{user?.firstName}</p>
+              )}
             </div>
             <div className="text-center">
               <p className="text-sm text-slate-500 font-medium">Отчество</p>
-              <p>{user?.middleName}</p>
+              {!user ? (
+                <Skeleton className="w-[150px] h-7 " />
+              ) : (
+                <p>{user?.middleName}</p>
+              )}
             </div>
             <div className="text-center">
               <p className="text-sm text-slate-500 font-medium">Эл. почта</p>
-              <p>{user?.email}</p>
+              {!user ? (
+                <Skeleton className="w-[150px] h-7 " />
+              ) : (
+                <p>{user?.email}</p>
+              )}
             </div>
             <div className="text-center">
               <p className="text-sm text-slate-500 font-medium">Роль</p>
-              <p>{user?.role}</p>
+              {!user ? (
+                <Skeleton className="w-[150px] h-7 " />
+              ) : (
+                <p>{LOCAL_ROLES[user?.role]}</p>
+              )}
             </div>
           </div>
         </TicketCard>

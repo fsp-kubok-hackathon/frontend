@@ -13,30 +13,13 @@ export default function UserHeaderCard() {
   const { user, isLoading, loggedOut } = useProfile();
   const { logout } = useLogout();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center gap-4">
-        <div className="flex flex-col items-end space-y-2">
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
-      </div>
-    );
-  }
-
-  if (loggedOut) {
-    return (
-      <Link href={PAGES.SIGN_IN}>
-        <Button>Вход</Button>
-      </Link>
-    );
-  }
-
   return (
     <div>
-      {user && (
-        <div className="flex items-center gap-4 flex-col md:flex-row">
-          <div className="">
-            {/* <p className="text-right">{fio(user)}</p> */}
+      <div className="flex items-center gap-4 flex-col md:flex-row h-12">
+        {!user ? (
+          <Skeleton className="w-[150px] h-6" />
+        ) : (
+          <div>
             <p className="text-center md:text-right">
               {user.lastName} {user.firstName} {user.middleName}
             </p>
@@ -44,16 +27,28 @@ export default function UserHeaderCard() {
               {user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
             </p>
           </div>
+        )}
 
-          <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
-            <Link href={PAGES.ACCOUNT}>
-              <Button>Личный кабинет</Button>
-            </Link>
-          </RoleRequired>
-
-          <Button onClick={() => logout()}>Выход</Button>
-        </div>
-      )}
+        {isLoading ? (
+          <>
+            <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
+              <Link href={PAGES.ACCOUNT}>
+                <Button>Личный кабинет</Button>
+              </Link>
+            </RoleRequired>
+          </>
+        ) : (
+          <>
+            {!user ? (
+              <Link href={PAGES.SIGN_IN}>
+                <Button>Вход</Button>
+              </Link>
+            ) : (
+              <Button onClick={() => logout()}>Выход</Button>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
