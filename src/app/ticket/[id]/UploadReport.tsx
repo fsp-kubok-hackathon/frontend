@@ -57,7 +57,7 @@ export const UploadReport = ({ ticketId, children }: Props) => {
             type="file"
             onChange={(e) => form.setValue('file', e.target.files[0])}
           />
-          <Button type="submit">Загрузить</Button>
+          <Button className='mt-5' type="submit">Загрузить</Button>
         </form>
       </DialogContent>
     </Dialog>
