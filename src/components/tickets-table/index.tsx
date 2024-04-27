@@ -145,7 +145,7 @@ function SimpleTicketsTable({ columns, data }) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <RoleRequired roles={ROLES.EMPLOYEE}>
+        <RoleRequired roles={[ROLES.EMPLOYEE]}>
           <Link href={PAGES.UPLOAD}>
             <Button>Добавить</Button>
           </Link>
