@@ -23,6 +23,7 @@ import { ROLES } from '@/consts/roles.consts';
 import TicketCard from '@/components/ticket/ticket-card';
 import { S3_HOST } from '@/consts/config.consts';
 import ExpensesNotification from '@/components/expenses-notification';
+import { useItems } from '@/hooks/useItems';
 
 type Props = {
   params: {
@@ -83,6 +84,8 @@ export function Ticket({ params: { id } }: Props) {
   const { data, isLoading } = useTicket(id);
   const { data: reciepts, isLoading: recieptsIsLoading } = useReciepts(id);
 
+  const { data: items } = useItems(id);
+
   // if (isLoading) {
   //   return (
   //     <main className="flex min-h-screen flex-col items-center justify-center">
@@ -107,7 +110,11 @@ export function Ticket({ params: { id } }: Props) {
   return (
     <main className="flex min-h-full min-w-full flex-col items-center">
       <div className="w-3/5 mt-20">
-        <ExpensesNotification ticketId={id} />
+        <RoleRequired roles={[ROLES.EMPLOYEE]}>
+          {items && items.length !== 0 && (
+            <ExpensesNotification ticketId={id} items={items} />
+          )}
+        </RoleRequired>
       </div>
       <div className="w-3/5 grid grid-cols-1 md:grid-cols-5 gap-4 mt-5">
         <TicketCard title="ФИО" className="md:col-span-2">

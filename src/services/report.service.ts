@@ -20,4 +20,16 @@ export class ReportService {
       throw new Error('Error uploading report');
     }
   }
+
+  /** @ts-ignore */
+  static async getItems({ ticketId }) {
+    const response = await api.get(`/reports/items/${ticketId}?approved=false`);
+
+    // HACK
+    if (response.status === 404) {
+      return [];
+    }
+
+    return response.data;
+  }
 }
