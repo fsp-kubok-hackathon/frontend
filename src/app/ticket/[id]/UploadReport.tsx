@@ -38,7 +38,7 @@ export const UploadReport = ({ ticketId, children }: Props) => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     console.log(data.file);
     await mutate(data.file);
   };
