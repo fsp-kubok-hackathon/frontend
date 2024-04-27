@@ -26,10 +26,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className, 'h-screen')}>
         <Providers>
-        <Header/>
-          {children}
-          <Toaster theme="light" position="bottom-left" duration={1500} />
-        <Footer/>
+          <div className="min-h-screen flex flex-col">
+            <Header className="flex-2" />
+            <div className="flex flex-1">{children}</div>
+            <Toaster theme="light" position="bottom-left" duration={1500} />
+            <Footer className="flex-2" />
+          </div>
         </Providers>
       </body>
     </html>

@@ -46,7 +46,7 @@ export default function Upload() {
 
   return (
     <>
-      <div className="flex min-h-screen items-center justify-center flex-col p-20">
+      <div className="flex min-h-full min-w-full items-center flex-col mt-20">
         <FormProvider {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

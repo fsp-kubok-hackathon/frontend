@@ -13,7 +13,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpDown,
+  ChevronLast,
+  ChevronLeft,
+  ChevronRight,
+  CirclePlus,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -31,16 +39,14 @@ import { useTickets } from '@/hooks/useTickets';
 import { Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
 import { fio, rangeDate, ticketStatus } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
+import RoleRequired from '../utils/RoleRequired';
+import { ROLES } from '@/consts/roles.consts';
 
 export const columnsSimple: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
-    cell: ({ row }) => (
-      <Link className="hover:underline" href={`/ticket/${row.getValue('id')}`}>
-        {row.getValue('id')}
-      </Link>
-    ),
+    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
   },
   {
     accessorKey: 'status',
@@ -72,11 +78,7 @@ export const columnsExtended: ColumnDef<TicketExtended>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
-    cell: ({ row }) => (
-      <Link className="hover:underline" href={`/ticket/${row.getValue('id')}`}>
-        {row.getValue('id')}
-      </Link>
-    ),
+    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
   },
   {
     accessorKey: 'status',
@@ -143,9 +145,14 @@ function SimpleTicketsTable({ columns, data }) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Link href={PAGES.UPLOAD}>
-          <Button>Добавить</Button>
-        </Link>
+        <RoleRequired roles={[ROLES.EMPLOYEE]}>
+          <Link href={PAGES.UPLOAD}>
+            <Button variant={'outline'}>
+              <CirclePlus className="mr-2" />
+              Добавить
+            </Button>
+          </Link>
+        </RoleRequired>
         {/*
 <Input
           placeholder="Filter emails..."
@@ -213,19 +220,26 @@ function SimpleTicketsTable({ columns, data }) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
                 return (
-                  <TableRow
+                  <Link
                     key={row.getValue('id')}
-                    data-state={row.getIsSelected() && 'selected'}
+                    href={`/ticket/${row.getValue('id')}`}
+                    legacyBehavior
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                    <TableRow
+                      key={row.getValue('id')}
+                      data-state={row.getIsSelected() && 'selected'}
+                      className="cursor-pointer"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </Link>
                 );
               })
             ) : (
@@ -247,22 +261,23 @@ function SimpleTicketsTable({ columns, data }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
+        <div className="space-x-2 flex items-center">
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            &lt;
+            <ChevronLeft />
           </Button>
+          <span>0 из 0</span>
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            &gt;
+            <ChevronRight />
           </Button>
         </div>
       </div>

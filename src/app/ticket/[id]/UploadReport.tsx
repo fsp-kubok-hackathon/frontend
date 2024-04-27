@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { ReportService } from '@/services/report.service';
 import { useMutation } from '@tanstack/react-query';
+import { PlusCircle } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -51,13 +52,20 @@ export const UploadReport = ({ ticketId, children }: Props) => {
           <DialogTitle>Загрузка выписки</DialogTitle>
           <DialogDescription>ticket id: {ticketId}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-2 items-end"
+        >
           <Input
             id="report"
             type="file"
             onChange={(e) => form.setValue('file', e.target.files[0])}
           />
-          <Button className='mt-5' type="submit">Загрузить</Button>
+          <div>
+            <Button type="submit" variant={'outline'} className="gap-2">
+              <PlusCircle /> Загрузить
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
