@@ -28,7 +28,7 @@ export default function RootLayout({
         <Providers>
           <div className="min-h-screen flex flex-col">
             <Header className="flex-2" />
-            <div className="flex-1">{children}</div>
+            <div className="flex flex-1">{children}</div>
             <Toaster theme="light" position="bottom-left" duration={1500} />
             <Footer className="flex-2" />
           </div>

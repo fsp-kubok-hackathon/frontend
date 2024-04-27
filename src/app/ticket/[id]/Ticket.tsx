@@ -27,7 +27,7 @@ import {
   FileX,
 } from 'lucide-react';
 import { Metadata } from 'next';
-import TicketCard from './Card';
+import TicketCard from '../../../components/ticket/ticket-card';
 import { UploadReport } from './UploadReport';
 import Link from 'next/link';
 
@@ -65,7 +65,7 @@ export function Ticket({ params: { id } }: Props) {
   // }
 
   return (
-    <main className="flex min-h-screen flex-col items-center">
+    <main className="flex min-h-full min-w-full flex-col items-center">
       <div className="w-3/5 grid grid-cols-1 md:grid-cols-5 gap-4 mt-20">
         <TicketCard title="ФИО" className="md:col-span-2">
           {isLoading ? (
