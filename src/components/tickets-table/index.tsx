@@ -72,6 +72,11 @@ export const columnsExtended: ColumnDef<TicketExtended>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
+    cell: ({ row }) => (
+      <Link className="hover:underline" href={`/ticket/${row.getValue('id')}`}>
+        {row.getValue('id')}
+      </Link>
+    ),
   },
   {
     accessorKey: 'status',
