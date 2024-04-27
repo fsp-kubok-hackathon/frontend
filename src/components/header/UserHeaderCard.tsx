@@ -16,17 +16,21 @@ export default function UserHeaderCard() {
   return (
     <div>
       <div className="flex items-center gap-4 flex-col md:flex-row h-12">
-        {!user ? (
+        {isLoading ? (
           <Skeleton className="w-[150px] h-6" />
         ) : (
-          <div>
-            <p className="text-center md:text-right">
-              {user.lastName} {user.firstName} {user.middleName}
-            </p>
-            <p className="text-muted-foreground text-center md:text-right">
-              {user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
-            </p>
-          </div>
+          <>
+            {user && (
+              <div>
+                <p className="text-center md:text-right">
+                  {user.lastName} {user.firstName} {user.middleName}
+                </p>
+                <p className="text-muted-foreground text-center md:text-right">
+                  {user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
+                </p>
+              </div>
+            )}
+          </>
         )}
 
         {isLoading ? (
