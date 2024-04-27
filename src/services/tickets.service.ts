@@ -2,7 +2,10 @@ import { api } from '@/api/axios.config';
 import { ROLES } from '@/consts/roles.consts';
 import { ProfileDto } from '@/lib/dto/auth.dto';
 import { RecieptsDto, TicketDto, TicketsDto } from '@/lib/dto/tickets.dto';
-import { UploadTicketDto } from '@/lib/types/upload-ticket.dto';
+import {
+  UploadTicketDto,
+  UploadToExistsDto,
+} from '@/lib/types/upload-ticket.dto';
 import { useQuery } from '@tanstack/react-query';
 import { formatISO } from 'date-fns';
 
@@ -17,9 +20,23 @@ export class TicketsService {
       formData.append(`file${i}`, f);
     });
 
-    console.log(receipts);
-
     await api.post('/tickets/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
+  static async uploadToExists({ ticketId, receipts }: UploadToExistsDto) {
+    const formData = new FormData();
+
+    formData.append('ticketId', ticketId);
+
+    receipts.forEach((f, i) => {
+      formData.append(`file${i}`, f);
+    });
+
+    await api.post(`/tickets/${ticketId}/reciepts`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

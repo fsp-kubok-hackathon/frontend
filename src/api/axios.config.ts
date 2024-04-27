@@ -1,9 +1,11 @@
+import { API_HOST } from '@/consts/config.consts';
 import { AccessTokenService } from '@/services/access-token';
 import { AuthService } from '@/services/auth.service';
+import { RefreshTokenService } from '@/services/refresh-token';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.mzhn.fun/api',
+  baseURL: API_HOST,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
@@ -26,8 +28,8 @@ api.interceptors.response.use(
         const res = await AuthService.refresh();
         return api.request(originalRequest);
       } catch (e) {
-        console.log(e);
         AccessTokenService.remove();
+        RefreshTokenService.remove();
       }
     }
     return error;

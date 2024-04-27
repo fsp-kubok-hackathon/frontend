@@ -60,6 +60,6 @@ export class AuthService {
       AccessTokenService.set(response.data.accessToken);
       RefreshTokenService.set(response.data.refreshToken);
     }
-    return response.data;
+    throw new Error(`Response status is ${response.status}`);
   }
 }

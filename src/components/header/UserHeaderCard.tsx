@@ -13,47 +13,47 @@ export default function UserHeaderCard() {
   const { user, isLoading, loggedOut } = useProfile();
   const { logout } = useLogout();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center gap-4">
-        <div className="flex flex-col items-end space-y-2">
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
-      </div>
-    );
-  }
-
-  if (loggedOut) {
-    return (
-      <Link href={PAGES.SIGN_IN}>
-        <Button>Вход</Button>
-      </Link>
-    );
-  }
-
   return (
     <div>
-      {user && (
-        <div className="flex items-center gap-4 flex-col md:flex-row">
-          <div className="">
-            {/* <p className="text-right">{fio(user)}</p> */}
-            <p className="text-center md:text-right">
-              {user.lastName} {user.firstName} {user.middleName}
-            </p>
-            <p className="text-muted-foreground text-center md:text-right">
-              {user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
-            </p>
-          </div>
+      <div className="flex items-center gap-4 flex-col md:flex-row h-12">
+        {isLoading ? (
+          <Skeleton className="w-[150px] h-6" />
+        ) : (
+          <>
+            {user && (
+              <div>
+                <p className="text-center md:text-right">
+                  {user.lastName} {user.firstName} {user.middleName}
+                </p>
+                <p className="text-muted-foreground text-center md:text-right">
+                  {user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
+                </p>
+              </div>
+            )}
+          </>
+        )}
 
-          <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
-            <Link href={PAGES.ACCOUNT}>
-              <Button>Личный кабинет</Button>
-            </Link>
-          </RoleRequired>
-
-          <Button onClick={() => logout()}>Выход</Button>
-        </div>
-      )}
+        {!isLoading && (
+          <>
+            {!user ? (
+              <Link href={PAGES.SIGN_IN}>
+                <Button>Вход</Button>
+              </Link>
+            ) : (
+              <>
+                {/** start НЕ ТРОГАТЬ */}
+                <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
+                  <Link href={PAGES.ACCOUNT}>
+                    <Button>Личный кабинет</Button>
+                  </Link>
+                </RoleRequired>
+                {/** end НЕ ТРОГАТЬ */}
+                <Button onClick={() => logout()}>Выход</Button>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
