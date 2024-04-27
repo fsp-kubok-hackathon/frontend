@@ -2,9 +2,7 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -16,17 +14,8 @@ import {
 } from '@/components/ui/table';
 import { useReciepts } from '@/hooks/useReciepts';
 import { useTicket } from '@/hooks/useTicket';
-import { datef, fio, rangeDate, ticketStatus } from '@/lib/utils';
-import {
-  ArrowDownToLine,
-  BookOpenCheck,
-  CalendarDays,
-  Download,
-  FileCheck,
-  FileUp,
-  FileX,
-} from 'lucide-react';
-import { Metadata } from 'next';
+import { datef, fio, ticketStatus } from '@/lib/utils';
+import { CalendarDays, Download, FileCheck, FileUp } from 'lucide-react';
 import TicketCard from './Card';
 import { UploadReport } from './UploadReport';
 import Link from 'next/link';
@@ -35,13 +24,6 @@ type Props = {
   params: {
     id: string;
   };
-};
-
-const ticket = {
-  id: '423432',
-  status: 'closed',
-  date: '04/02/2024',
-  user: 'Евтеев Н. А.',
 };
 
 export function Ticket({ params: { id } }: Props) {
