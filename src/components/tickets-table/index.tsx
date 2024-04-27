@@ -37,28 +37,19 @@ import { PAGES } from '@/consts/pages.consts';
 import Link from 'next/link';
 import { useTickets } from '@/hooks/useTickets';
 import { Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
-import { fio, rangeDate, ticketStatus } from '@/lib/utils';
+import { cn, datef, fio, rangeDate, ticketStatus } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
 import RoleRequired from '../utils/RoleRequired';
 import { ROLES } from '@/consts/roles.consts';
+import { StatusColors } from '@/consts/status-colors.consts';
+import { TICKET_STATUSES } from '@/consts/ticket.const';
 
 export const columnsSimple: ColumnDef<Ticket>[] = [
   {
+    id: 'id',
     accessorKey: 'id',
-    header: 'ID',
-    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Статус <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => <Badge>{ticketStatus(row.getValue('status'))}</Badge>,
+    header: ({ column }) => <></>,
+    cell: ({ row }) => <></>,
   },
   {
     id: 'date',
@@ -71,26 +62,45 @@ export const columnsSimple: ColumnDef<Ticket>[] = [
       </Button>
     ),
     accessorFn: (row) => rangeDate(row),
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Статус <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Badge
+        className={cn(StatusColors[row.getValue('status') as TICKET_STATUSES])}
+      >
+        {ticketStatus(row.getValue('status'))}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'createdAt',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Дата Загрузки <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => datef(row.getValue('createdAt'), 'dd.MM.yyyy'),
   },
 ];
 
 export const columnsExtended: ColumnDef<TicketExtended>[] = [
   {
+    id: 'id',
     accessorKey: 'id',
-    header: 'ID',
-    cell: ({ row }) => <p className="hover:underline">{row.getValue('id')}</p>,
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Статус <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => <Badge>{ticketStatus(row.getValue('status'))}</Badge>,
+    header: ({ column }) => <></>,
+    cell: ({ row }) => <></>,
   },
   {
     id: 'date',
@@ -103,6 +113,36 @@ export const columnsExtended: ColumnDef<TicketExtended>[] = [
       </Button>
     ),
     accessorFn: (row) => rangeDate(row),
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Статус <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Badge
+        className={cn(StatusColors[row.getValue('status') as TICKET_STATUSES])}
+      >
+        {ticketStatus(row.getValue('status'))}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'createdAt',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Дата Загрузки <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => datef(row.getValue('createdAt'), 'dd.MM.yyyy'),
   },
   {
     accessorKey: 'user',
