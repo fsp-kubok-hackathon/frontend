@@ -1,6 +1,7 @@
 import { api } from '@/api/axios.config';
 
 export class ReportService {
+  /** @ts-ignore */
   static async upload({ file, ticketId }) {
     console.log(ticketId, 'from report.service');
     const formData = new FormData();

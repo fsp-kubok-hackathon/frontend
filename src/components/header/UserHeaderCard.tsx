@@ -35,17 +35,21 @@ export default function UserHeaderCard() {
 
         {!isLoading && (
           <>
-            <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
-              <Link href={PAGES.ACCOUNT}>
-                <Button>Личный кабинет</Button>
-              </Link>
-            </RoleRequired>
             {!user ? (
               <Link href={PAGES.SIGN_IN}>
                 <Button>Вход</Button>
               </Link>
             ) : (
-              <Button onClick={() => logout()}>Выход</Button>
+              <>
+                {/** start НЕ ТРОГАТЬ */}
+                <RoleRequired roles={[ROLES.EMPLOYEE, ROLES.ACCOUNTANT]}>
+                  <Link href={PAGES.ACCOUNT}>
+                    <Button>Личный кабинет</Button>
+                  </Link>
+                </RoleRequired>
+                {/** end НЕ ТРОГАТЬ */}
+                <Button onClick={() => logout()}>Выход</Button>
+              </>
             )}
           </>
         )}

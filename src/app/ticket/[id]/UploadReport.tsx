@@ -59,7 +59,7 @@ export const UploadReport = ({ ticketId, children }: Props) => {
           <Input
             id="report"
             type="file"
-            onChange={(e) => form.setValue('file', e.target.files[0])}
+            onChange={(e) => form.setValue('file', e.target.files?.[0])}
           />
           <div>
             <Button type="submit" variant={'outline'} className="gap-2">

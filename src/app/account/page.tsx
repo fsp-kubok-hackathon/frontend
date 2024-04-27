@@ -3,7 +3,7 @@
 import TicketCard from '@/components/ticket/ticket-card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { LOCAL_ROLES } from '@/consts/roles.consts';
+import { LOCAL_ROLES, ROLES } from '@/consts/roles.consts';
 import { useProfile } from '@/hooks/useProfile';
 import { useState } from 'react';
 
@@ -34,7 +34,7 @@ export default function Page() {
               {!user ? (
                 <Skeleton className="w-[150px] h-7 " />
               ) : (
-                <p>{user?.lastName}</p>
+                <p>{user.lastName}</p>
               )}
             </div>
             <div className="text-center">
@@ -42,7 +42,7 @@ export default function Page() {
               {!user ? (
                 <Skeleton className="w-[150px] h-7 " />
               ) : (
-                <p>{user?.firstName}</p>
+                <p>{user.firstName}</p>
               )}
             </div>
             <div className="text-center">
@@ -50,7 +50,7 @@ export default function Page() {
               {!user ? (
                 <Skeleton className="w-[150px] h-7 " />
               ) : (
-                <p>{user?.middleName}</p>
+                <p>{user.middleName}</p>
               )}
             </div>
             <div className="text-center">
@@ -58,7 +58,7 @@ export default function Page() {
               {!user ? (
                 <Skeleton className="w-[150px] h-7 " />
               ) : (
-                <p>{user?.email}</p>
+                <p>{user.email}</p>
               )}
             </div>
             <div className="text-center">
@@ -66,7 +66,7 @@ export default function Page() {
               {!user ? (
                 <Skeleton className="w-[150px] h-7 " />
               ) : (
-                <p>{LOCAL_ROLES[user?.role]}</p>
+                <p>{LOCAL_ROLES[user.role as ROLES]}</p>
               )}
             </div>
           </div>

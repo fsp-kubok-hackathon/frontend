@@ -1,5 +1,6 @@
 import { AccessTokenService } from '@/services/access-token';
 import { AuthService } from '@/services/auth.service';
+import { RefreshTokenService } from '@/services/refresh-token';
 import axios from 'axios';
 
 const api = axios.create({
@@ -26,8 +27,8 @@ api.interceptors.response.use(
         const res = await AuthService.refresh();
         return api.request(originalRequest);
       } catch (e) {
-        console.log(e);
         AccessTokenService.remove();
+        RefreshTokenService.remove();
       }
     }
     return error;
