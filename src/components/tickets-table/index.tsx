@@ -29,10 +29,10 @@ import { Badge } from '../ui/badge';
 import { PAGES } from '@/consts/pages.consts';
 import Link from 'next/link';
 import { useTickets } from '@/hooks/useTickets';
-import { Ticket } from '@/lib/dto/tickets.dto';
-import { rangeDate, ticketStatus } from '@/lib/utils';
+import { Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
+import { fio, rangeDate, ticketStatus } from '@/lib/utils';
 
-export const columns: ColumnDef<Ticket>[] = [
+export const columnsSimple: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
@@ -61,9 +61,27 @@ export const columns: ColumnDef<Ticket>[] = [
     ),
     accessorFn: (row) => rangeDate(row),
   },
-  /*
+];
+
+export const columnsExtended: ColumnDef<TicketExtended>[] = [
   {
-    accessorFn: (row) => row.startDate,
+    accessorKey: 'id',
+    header: 'ID',
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Статус <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <Badge>{ticketStatus(row.getValue('status'))}</Badge>,
+  },
+  {
+    id: 'date',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -72,20 +90,19 @@ export const columns: ColumnDef<Ticket>[] = [
         Дата <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <div>{row.getValue('date')}</div>,
+    accessorFn: (row) => rangeDate(row),
   },
   {
-    accessorKey: 'author',
+    accessorKey: 'user',
     header: () => <div className="text-right">Автор</div>,
     cell: ({ row }) => (
-      <div className="text-right">{row.getValue('author')}</div>
+      <div className="text-right">{fio(row.getValue('user'))}</div>
     ),
   },
-  */
 ];
 
 //@ts-ignore
-function SimpleTicketsTable({ data }) {
+function SimpleTicketsTable({ columns, data }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -205,7 +222,7 @@ function SimpleTicketsTable({ data }) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columnsSimple.length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -239,12 +256,18 @@ function SimpleTicketsTable({ data }) {
   );
 }
 
-export function TicketsTable() {
-  const { data, isLoading } = useTickets();
+type Props = {
+  all?: boolean;
+};
+
+export function TicketsTable({ all }: Props) {
+  const { data, isLoading } = useTickets(all);
+
+  const columns = all ? columnsExtended : columnsSimple;
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  return <SimpleTicketsTable data={data} />;
+  return <SimpleTicketsTable data={data} columns={columns} />;
 }

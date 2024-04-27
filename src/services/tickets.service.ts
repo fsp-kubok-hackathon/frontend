@@ -37,4 +37,9 @@ export class TicketsService {
     const response = await api.get<RecieptsDto>(`/tickets/${id}/reciepts`);
     return response.data;
   }
+
+  static async getAll(): Promise<TicketsDto> {
+    const response = await api.get<TicketsDto>('/tickets');
+    return response.data;
+  }
 }
