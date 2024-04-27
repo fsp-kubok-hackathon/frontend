@@ -1,6 +1,9 @@
 import { api } from '@/api/axios.config';
+import { ROLES } from '@/consts/roles.consts';
+import { ProfileDto } from '@/lib/dto/auth.dto';
 import { RecieptsDto, TicketDto, TicketsDto } from '@/lib/dto/tickets.dto';
 import { UploadTicketDto } from '@/lib/types/upload-ticket.dto';
+import { useQuery } from '@tanstack/react-query';
 import { formatISO } from 'date-fns';
 
 export class TicketsService {
@@ -24,7 +27,14 @@ export class TicketsService {
   }
 
   static async get(): Promise<TicketsDto> {
-    const response = await api.get<TicketsDto>('/account/tickets');
+    const profile = await api.get<ProfileDto>('/account');
+
+    console.log(profile.data);
+
+    const url =
+      profile.data.role === ROLES.ACCOUNTANT ? '/tickets' : '/account/tickets';
+
+    const response = await api.get<TicketsDto>(url);
     return response.data;
   }
 

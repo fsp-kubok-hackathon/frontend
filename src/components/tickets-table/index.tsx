@@ -31,11 +31,17 @@ import Link from 'next/link';
 import { useTickets } from '@/hooks/useTickets';
 import { Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
 import { fio, rangeDate, ticketStatus } from '@/lib/utils';
+import { Skeleton } from '../ui/skeleton';
 
 export const columnsSimple: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
+    cell: ({ row }) => (
+      <Link className="hover:underline" href={`/ticket/${row.getValue('id')}`}>
+        {row.getValue('id')}
+      </Link>
+    ),
   },
   {
     accessorKey: 'status',
@@ -130,10 +136,6 @@ function SimpleTicketsTable({ columns, data }) {
     },
   });
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -185,12 +187,18 @@ function SimpleTicketsTable({ columns, data }) {
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                      {!data ? (
+                        <Skeleton className="w-[100px] h-4" />
+                      ) : (
+                        <>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </>
+                      )}
                     </TableHead>
                   );
                 })}
@@ -201,32 +209,28 @@ function SimpleTicketsTable({ columns, data }) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
                 return (
-                  <Link
+                  <TableRow
                     key={row.getValue('id')}
-                    href={`/ticket/${row.getValue('id')}`}
-                    legacyBehavior
+                    data-state={row.getIsSelected() && 'selected'}
                   >
-                    <TableRow data-state={row.getIsSelected() && 'selected'}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </Link>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 );
               })
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columnsSimple.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
+                {columns.map((c) => (
+                  <TableCell key={c.id}>
+                    {!data && <Skeleton className="w-[100px] h-4" />}
+                  </TableCell>
+                ))}
               </TableRow>
             )}
           </TableBody>
@@ -265,9 +269,9 @@ export function TicketsTable({ all }: Props) {
 
   const columns = all ? columnsExtended : columnsSimple;
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return <SimpleTicketsTable data={data} columns={columns} />;
 }
