@@ -198,9 +198,9 @@ function SimpleTicketsTable({ columns, data }) {
 }
 
 type Props = {
-  categories: CategoryInfo
+  categories ?: CategoryInfo
 };
 
 export function CategoriesTable({ categories }: Props) {
-  return <SimpleTicketsTable data={categories} columns={columns} />;
+  return <SimpleTicketsTable data={categories || []} columns={columns} />;
 }

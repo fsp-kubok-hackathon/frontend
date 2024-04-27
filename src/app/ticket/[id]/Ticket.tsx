@@ -180,7 +180,7 @@ export function Ticket({ params: { id } }: Props) {
         </RoleRequired>
       </div>
       <div className="w-3/5 mt-20">
-        <CategoriesTable categories={ticketData?.categories || []} />
+        <CategoriesTable categories={ticketData?.categories} />
       </div>
       <div className="w-3/5 mt-20">
         <Table className="w-full">
