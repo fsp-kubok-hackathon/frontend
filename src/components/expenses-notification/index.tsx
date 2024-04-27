@@ -49,7 +49,7 @@ export default function ExpensesNotification({
   };
 
   return (
-    <div className="bg-red-400 w-full text-white text-xl rounded-md px-10">
+    <div className="bg-red-500 w-full text-white text-xl rounded-md p-4">
       У вас есть неподтвержденные расходы!
       <Dialog>
         <DialogTrigger asChild>
