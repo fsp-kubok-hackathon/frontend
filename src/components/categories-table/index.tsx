@@ -36,15 +36,16 @@ import { Badge } from '../ui/badge';
 import { PAGES } from '@/consts/pages.consts';
 import Link from 'next/link';
 import { useTickets } from '@/hooks/useTickets';
-import { Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
+import { CategoryInfo, Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
 import { fio, rangeDate, ticketStatus } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
 import RoleRequired from '../utils/RoleRequired';
 import { ROLES } from '@/consts/roles.consts';
+import { moneyFormatter } from '@/lib/formatter';
 
 export const columns: ColumnDef<Ticket>[] = [
   {
-    accessorKey: 'category',
+    accessorKey: 'name',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -53,10 +54,10 @@ export const columns: ColumnDef<Ticket>[] = [
         Категория <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <Badge>{ticketStatus(row.getValue('status'))}</Badge>,
+    cell: ({ row }) => row.getValue('name'),
   },
   {
-    accessorKey: 'wastes',
+    accessorKey: 'price',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -65,10 +66,10 @@ export const columns: ColumnDef<Ticket>[] = [
         Траты <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => row.getValue('wastes'),
+    cell: ({ row }) => moneyFormatter.format(Number(row.getValue('price')) / 100),
   },
   {
-    accessorKey: 'limit',
+    accessorKey: 'maxPrice',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -77,10 +78,10 @@ export const columns: ColumnDef<Ticket>[] = [
         Лимит <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => row.getValue('limit'),
+    cell: ({ row }) => moneyFormatter.format(Number(row.getValue('maxPrice')) / 100),
   },
   {
-    accessorKey: 'exceedingLimit',
+    accessorKey: 'high',
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -89,7 +90,15 @@ export const columns: ColumnDef<Ticket>[] = [
         Превышение лимита <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => row.getValue('exceedingLimit'),
+    cell: ({ row }) => {
+      const maxPrice = parseInt(row.getValue('maxPrice'))
+      const price = parseInt(row.getValue('price'))
+      if (maxPrice >= price) {
+        return moneyFormatter.format(0)
+      }
+
+      return moneyFormatter.format((price - maxPrice) / 100)
+    },
   },
 ];
 
@@ -189,7 +198,7 @@ function SimpleTicketsTable({ columns, data }) {
 }
 
 type Props = {
-  categories: []
+  categories: CategoryInfo
 };
 
 export function CategoriesTable({ categories }: Props) {
