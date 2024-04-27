@@ -1,1 +1,10 @@
-# business-trip FRONTEND
+# ФСП "Кубок регионов" frontend
+
+## Зависимости проекта
+
+- Next Js
+- Shadcn Ui
+
+## Переменные среды
+
+
