@@ -27,14 +27,7 @@ export class TicketsService {
   }
 
   static async get(): Promise<TicketsDto> {
-    const profile = await api.get<ProfileDto>('/account');
-
-    console.log(profile.data);
-
-    const url =
-      profile.data.role === ROLES.ACCOUNTANT ? '/tickets' : '/account/tickets';
-
-    const response = await api.get<TicketsDto>(url);
+    const response = await api.get<TicketsDto>('/account/tickets');
     return response.data;
   }
 

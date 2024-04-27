@@ -16,7 +16,6 @@ import {
 import { ArrowUpDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-// import { Checkbox } from "@/components/ui/checkbox"
 import {
   Table,
   TableBody,
@@ -225,13 +224,19 @@ function SimpleTicketsTable({ columns, data }) {
                 );
               })
             ) : (
-              <TableRow>
-                {columns.map((c) => (
-                  <TableCell key={c.id}>
-                    {!data && <Skeleton className="w-[100px] h-4" />}
-                  </TableCell>
+              <>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableCell key={header.id}>
+                          <Skeleton className="w-[100px] h-4" />
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
                 ))}
-              </TableRow>
+              </>
             )}
           </TableBody>
         </Table>
@@ -265,13 +270,9 @@ type Props = {
 };
 
 export function TicketsTable({ all }: Props) {
-  const { data, isLoading } = useTickets(all);
+  const { data } = useTickets(all);
 
   const columns = all ? columnsExtended : columnsSimple;
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return <SimpleTicketsTable data={data} columns={columns} />;
 }
