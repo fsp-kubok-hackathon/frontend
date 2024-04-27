@@ -24,18 +24,16 @@ import TicketCard from '@/components/ticket/ticket-card';
 import { S3_HOST } from '@/consts/config.consts';
 import ExpensesNotification from '@/components/expenses-notification';
 import { useItems } from '@/hooks/useItems';
+import { CategoriesTable } from '@/components/categories-table';
+import { moneyFormatter } from '@/lib/formatter';
+import { Badge } from '@/components/ui/badge';
+import { StatusColors } from '@/consts/status-colors.consts';
+import { TICKET_STATUSES } from '@/consts/ticket.const';
 
 type Props = {
   params: {
     id: string;
   };
-};
-
-const ticket = {
-  id: '423432',
-  status: 'closed',
-  date: '04/02/2024',
-  user: 'Евтеев Н. А.',
 };
 
 function PeriodCard({
@@ -64,7 +62,7 @@ function PeriodCard({
               <div>
                 <CalendarDays />
               </div>
-              <div>{datef(startDate || '', 'dd.MM.yyyy')}</div>
+              <div>{startDate ? datef(startDate, 'dd.MM.yyyy') : ''}</div>
             </Card>
             <div className="flex items-center">-</div>
             <Card className="flex items-center gap-x-3 py-3 px-3">
@@ -86,27 +84,10 @@ export function Ticket({ params: { id } }: Props) {
 
   const { data: items } = useItems(id);
 
-  // if (isLoading) {
-  //   return (
-  //     <main className="flex min-h-screen flex-col items-center justify-center">
-  //       Loading...
-  //     </main>
-  //   );
-  // }
-
-  // if (!data) {
-  //   return (
-  //     <main className="flex min-h-screen flex-col items-center justify-center">
-  //       Ошибка при запросе данных
-  //     </main>
-  //   );
-  // }
-
   const periodCardsProps = {
     isLoading,
     ...(data || {}),
   };
-
   return (
     <main className="flex min-h-full min-w-full flex-col items-center">
       <div className="w-3/5 mt-20">
@@ -144,7 +125,15 @@ export function Ticket({ params: { id } }: Props) {
           {isLoading ? (
             <Skeleton className="w-[60px] h-4" />
           ) : (
-            <p>{data && ticketStatus(data.status)}</p>
+            <p>
+              {data && (
+                <Badge
+                  className={cn(StatusColors[data.status as TICKET_STATUSES])}
+                >
+                  {ticketStatus(data.status)}
+                </Badge>
+              )}
+            </p>
           )}
         </TicketCard>
         <TicketCard className="md:col-start-5" title="Создан">
@@ -187,56 +176,57 @@ export function Ticket({ params: { id } }: Props) {
             </div>
           </TicketCard>
         </RoleRequired>
-        <div className="md:col-span-5 md:row-start-3">
-          <Table className="w-full">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="">Фото</TableHead>
-                <TableHead className="text-right">Итог</TableHead>
-                <TableHead className="text-center">Дата оплаты</TableHead>
-                <TableHead className="text-center">Дата загрузки</TableHead>
-                <TableHead className="text-right">Загружено</TableHead>
-              </TableRow>
-            </TableHeader>
-            {isLoading && reciepts ? (
-              <Skeleton className="w-full h-12" />
-            ) : (
-              <TableBody>
-                {reciepts?.map((r) => {
-                  let imageLink = new URL(r.imageLink);
+      </div>
+      <div className="w-3/5 mt-20">
+        <CategoriesTable categories={[]} />
+      </div>
+      <div className="w-3/5 mt-20">
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="">Фото</TableHead>
+              <TableHead className="text-right">Итог</TableHead>
+              <TableHead className="text-center">Дата оплаты</TableHead>
+              <TableHead className="text-center">Дата загрузки</TableHead>
+              <TableHead className="text-right">Загружено</TableHead>
+            </TableRow>
+          </TableHeader>
+          {isLoading && reciepts ? (
+            <Skeleton className="w-full h-12" />
+          ) : (
+            <TableBody>
+              {reciepts?.map((r) => {
+                let imageLink = new URL(r.imageLink);
 
-                  if (imageLink.host === 'minio:9000') {
-                    imageLink.host = 'mzhn.fun:9000';
-                  }
-
-                  return (
-                    <TableRow key={r.createdAt}>
-                      <TableCell className="hidden sm:table-cell">
-                        <Image
-                          alt="Product image"
-                          className="aspect-square rounded-md object-cover"
-                          height="64"
-                          src={imageLink.toString().split('?')[0]}
-                          width="64"
-                        />
-                      </TableCell>
-                      <TableCell align="right">{r.amount}</TableCell>
-                      <TableCell align="center">
-                        {datef(r.paidAt, 'dd.MM.yyyy')}
-                      </TableCell>
-                      <TableCell align="center">
-                        {datef(r.createdAt, 'dd.MM.yyyy')}
-                      </TableCell>
-                      <TableCell align="right">
-                        {data && fio(data.user)}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            )}
-          </Table>
-        </div>
+                return (
+                  <TableRow key={r.createdAt}>
+                    <TableCell className="hidden sm:table-cell">
+                      <Image
+                        alt="Product image"
+                        className="aspect-square rounded-md object-cover"
+                        height="64"
+                        src={imageLink.toString().split('?')[0]}
+                        width="64"
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      {moneyFormatter.format(Number(r.totalAmount) / 100)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {datef(r.paidAt, 'dd.MM.yyyy')}
+                    </TableCell>
+                    <TableCell align="center">
+                      {datef(r.createdAt, 'dd.MM.yyyy')}
+                    </TableCell>
+                    <TableCell align="right">
+                      {data && fio(data.user)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          )}
+        </Table>
       </div>
     </main>
   );

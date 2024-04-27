@@ -57,7 +57,7 @@ export type TicketDto = {
 export type TicketsDto = Ticket[];
 
 type Reciept = {
-  amount: string;
+  totalAmount: string;
   fn: string;
   fp: string;
   paidAt: string;
