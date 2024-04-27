@@ -31,6 +31,8 @@ import { useTickets } from '@/hooks/useTickets';
 import { Ticket, TicketExtended } from '@/lib/dto/tickets.dto';
 import { fio, rangeDate, ticketStatus } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
+import RoleRequired from '../utils/RoleRequired';
+import { ROLES } from '@/consts/roles.consts';
 
 export const columnsSimple: ColumnDef<Ticket>[] = [
   {
@@ -143,9 +145,11 @@ function SimpleTicketsTable({ columns, data }) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Link href={PAGES.UPLOAD}>
-          <Button>Добавить</Button>
-        </Link>
+        <RoleRequired roles={ROLES.EMPLOYEE}>
+          <Link href={PAGES.UPLOAD}>
+            <Button>Добавить</Button>
+          </Link>
+        </RoleRequired>
         {/*
 <Input
           placeholder="Filter emails..."
