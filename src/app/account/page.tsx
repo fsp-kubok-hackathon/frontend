@@ -2,14 +2,6 @@
 
 import TicketCard from '@/components/ticket/ticket-card';
 import { Avatar } from '@/components/ui/avatar';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useProfile } from '@/hooks/useProfile';
 import { useState } from 'react';
 
