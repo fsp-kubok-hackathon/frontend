@@ -6,6 +6,6 @@ export enum TICKET_STATUSES {
 
 export const LOCAL_TICKET_STATUSES: Record<TICKET_STATUSES, string> = {
   [TICKET_STATUSES.OK]: 'ОК',
-  [TICKET_STATUSES.PENDING]: 'Обработка',
+  [TICKET_STATUSES.PENDING]: 'В обработке',
   [TICKET_STATUSES.FAILED]: 'Необходима доработка',
 };

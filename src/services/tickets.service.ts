@@ -14,6 +14,8 @@ export class TicketsService {
       formData.append(`file${i}`, f);
     });
 
+    console.log(receipts);
+
     await api.post('/tickets/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',

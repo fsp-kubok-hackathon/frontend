@@ -41,7 +41,7 @@ export default function UserHeaderCard() {
               {user.lastName} {user.firstName} {user.middleName}
             </p>
             <p className="text-muted-foreground text-center md:text-right">
-              @{user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
+              {user.handle} / {LOCAL_ROLES[user.role as ROLES] || user.role}
             </p>
           </div>
 
