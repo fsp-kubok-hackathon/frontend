@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 import { PAGES } from './consts/pages.consts';
-
-const HOST = 'https://api.mzhn.fun/api';
+import { API_HOST } from './consts/config.consts';
 
 // Helper function to check token validity
 async function validateTokenAndRefresh(
@@ -11,7 +10,7 @@ async function validateTokenAndRefresh(
   url: string,
 ) {
   try {
-    const res = await fetch(`${HOST}/account`, {
+    const res = await fetch(`${API_HOST}/account`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -19,7 +18,7 @@ async function validateTokenAndRefresh(
       return { isValid: true, newTokens: null }; // Token is valid
     } else {
       // Try to refresh the token
-      const refreshRes = await fetch(`${HOST}/refresh`, {
+      const refreshRes = await fetch(`${API_HOST}/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

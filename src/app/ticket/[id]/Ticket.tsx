@@ -21,6 +21,7 @@ import { UploadReport } from './UploadReport';
 import RoleRequired from '@/components/utils/RoleRequired';
 import { ROLES } from '@/consts/roles.consts';
 import TicketCard from '@/components/ticket/ticket-card';
+import { S3_HOST } from '@/consts/config.consts';
 
 type Props = {
   params: {
@@ -159,7 +160,7 @@ export function Ticket({ params: { id } }: Props) {
                   <FileCheck height={36} width={36} />
                   <Link
                     className="text-2xl font-normal"
-                    href={`http://mzhn.fun:9000/images/${data.report.fileName}`}
+                    href={`${S3_HOST}/${data.report.fileName}`}
                   >
                     Скачать
                   </Link>
