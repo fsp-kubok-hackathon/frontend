@@ -79,10 +79,12 @@ function PeriodCard({
 }
 
 export function Ticket({ params: { id } }: Props) {
-  const { data, isLoading } = useTicket(id);
+  const { data: ticketData, isLoading } = useTicket(id);
   const { data: reciepts, isLoading: recieptsIsLoading } = useReciepts(id);
 
   const { data: items } = useItems(id);
+
+  const data = ticketData?.ticket;
 
   const periodCardsProps = {
     isLoading,
@@ -178,7 +180,7 @@ export function Ticket({ params: { id } }: Props) {
         </RoleRequired>
       </div>
       <div className="w-3/5 mt-20">
-        <CategoriesTable categories={[]} />
+        <CategoriesTable categories={ticketData?.categories || []} />
       </div>
       <div className="w-3/5 mt-20">
         <Table className="w-full">
