@@ -14,7 +14,7 @@ export default function RoleRequired({ roles, children }: Props) {
     return <>{children}</>;
   }
 
-  if (!isLoading && user && roles.includes(user?.role?.toLowerCase())) {
+  if (!isLoading && user && roles.includes(user?.role)) {
     return <>{children}</>;
   }
 

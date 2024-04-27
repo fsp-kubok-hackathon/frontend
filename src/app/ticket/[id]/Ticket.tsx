@@ -54,7 +54,8 @@ export function Ticket({ params: { id } }: Props) {
             <Skeleton className="w-[200px] h-4" />
           ) : (
             <p className="text-xl">
-              {data.user.lastName} {data.user.firstName} {data.user.middleName}
+              {data?.user.lastName} {data?.user.firstName}{' '}
+              {data?.user.middleName}
             </p>
           )}
         </TicketCard>
@@ -75,14 +76,14 @@ export function Ticket({ params: { id } }: Props) {
           {isLoading ? (
             <Skeleton className="w-[60px] h-4" />
           ) : (
-            <p>{ticketStatus(data.status)}</p>
+            <p>{data && ticketStatus(data.status)}</p>
           )}
         </TicketCard>
         <TicketCard className="md:col-start-5" title="Создан">
           {isLoading ? (
             <Skeleton className="w-[60px] h-4" />
           ) : (
-            <p>{datef(data.createdAt, 'dd.MM.yyyy')}</p>
+            <p>{data && datef(data.createdAt, 'dd.MM.yyyy')}</p>
           )}
         </TicketCard>
         <TicketCard className="md:col-span-3 row-start-2" title="Период">
@@ -99,14 +100,14 @@ export function Ticket({ params: { id } }: Props) {
                   <div>
                     <CalendarDays />
                   </div>
-                  <div>{datef(data.startDate, 'dd.MM.yyyy')}</div>
+                  <div>{data && datef(data.startDate, 'dd.MM.yyyy')}</div>
                 </Card>
                 <div className="flex items-center">-</div>
                 <Card className="flex items-center gap-x-3 py-3 px-3">
                   <div>
                     <CalendarDays />
                   </div>
-                  <div>{datef(data.startDate, 'dd.MM.yyyy')}</div>
+                  <div>{data && datef(data.startDate, 'dd.MM.yyyy')}</div>
                 </Card>
               </div>
             </div>
@@ -177,7 +178,9 @@ export function Ticket({ params: { id } }: Props) {
                       <TableCell align="center">
                         {datef(r.createdAt, 'dd.MM.yyyy')}
                       </TableCell>
-                      <TableCell align="right">{fio(data?.user)}</TableCell>
+                      <TableCell align="right">
+                        {data && fio(data.user)}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -1,10 +1,10 @@
 import { TicketsService } from '@/services/tickets.service';
 import { useQuery } from '@tanstack/react-query';
 
-export function useTickets() {
+export function useTickets(all ?: boolean) {
   const { data, isLoading } = useQuery({
     queryKey: ['tickets'],
-    queryFn: TicketsService.get,
+    queryFn: all ? TicketsService.getAll : TicketsService.get,
   });
 
   return { data, isLoading };
