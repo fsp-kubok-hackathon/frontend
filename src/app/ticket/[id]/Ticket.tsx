@@ -22,6 +22,7 @@ import RoleRequired from '@/components/utils/RoleRequired';
 import { ROLES } from '@/consts/roles.consts';
 import TicketCard from '@/components/ticket/ticket-card';
 import { S3_HOST } from '@/consts/config.consts';
+import ExpensesNotification from '@/components/expenses-notification';
 
 type Props = {
   params: {
@@ -105,7 +106,10 @@ export function Ticket({ params: { id } }: Props) {
 
   return (
     <main className="flex min-h-full min-w-full flex-col items-center">
-      <div className="w-3/5 grid grid-cols-1 md:grid-cols-5 gap-4 mt-20">
+      <div className="w-3/5 mt-20">
+        <ExpensesNotification ticketId={id} />
+      </div>
+      <div className="w-3/5 grid grid-cols-1 md:grid-cols-5 gap-4 mt-5">
         <TicketCard title="ФИО" className="md:col-span-2">
           {isLoading ? (
             <Skeleton className="w-[200px] h-4" />
