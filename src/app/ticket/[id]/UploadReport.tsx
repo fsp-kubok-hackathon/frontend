@@ -1,28 +1,19 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { ReportUploadForm } from '@/lib/forms/upload-report.form';
 import { ReportService } from '@/services/report.service';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 type Props = {
@@ -47,7 +38,7 @@ export const UploadReport = ({ ticketId, children }: Props) => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     console.log(data.file);
     await mutate(data.file);
   };
@@ -66,7 +57,7 @@ export const UploadReport = ({ ticketId, children }: Props) => {
             type="file"
             onChange={(e) => form.setValue('file', e.target.files[0])}
           />
-          <Button type="submit">Загрузить</Button>
+          <Button className='mt-5' type="submit">Загрузить</Button>
         </form>
       </DialogContent>
     </Dialog>

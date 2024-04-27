@@ -1,15 +1,16 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { AuthService } from '@/services/auth.service';
-import { SignInDto, SignUpDto } from '@/lib/dto/auth.dto';
-import { toast } from 'sonner';
-import { z } from '@/lib/zod';;
-import { zodResolver } from '@hookform/resolvers/zod';
-import { SignInForm, SignUpForm } from '@/lib/forms/auth.form';
 
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { AuthService } from '@/services/auth.service';
+import { toast } from 'sonner';
+import { z } from '@/lib/zod';
+import { SignUpDto } from '@/lib/dto/auth.dto';
+import { SignUpForm } from '@/lib/forms/auth.form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -27,11 +28,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import Link from 'next/link';
-import { PAGES } from '@/consts/pages.consts';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { LOCAL_ROLES, ROLES } from '@/consts/roles.consts';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
+import { PAGES } from '@/consts/pages.consts';
+import { LOCAL_ROLES, ROLES } from '@/consts/roles.consts';
 
 export default function SignUp() {
   const form = useForm<z.infer<typeof SignUpForm>>({
@@ -70,34 +76,34 @@ export default function SignUp() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-4"
               >
-                              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Вы являетесь</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Выберите роль" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={ROLES.ACCOUNTANT}>
-                          {LOCAL_ROLES[ROLES.ACCOUNTANT]}
-                        </SelectItem>
-                        <SelectItem value={ROLES.EMPLOYEE}>
-                          {LOCAL_ROLES[ROLES.EMPLOYEE]}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Вы являетесь</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Выберите роль" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value={ROLES.ACCOUNTANT}>
+                            {LOCAL_ROLES[ROLES.ACCOUNTANT]}
+                          </SelectItem>
+                          <SelectItem value={ROLES.EMPLOYEE}>
+                            {LOCAL_ROLES[ROLES.EMPLOYEE]}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="email"

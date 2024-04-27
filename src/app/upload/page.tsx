@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 
-import Header from '@/components/header';
 import Upload from './Upload';
 
 interface Props {}
