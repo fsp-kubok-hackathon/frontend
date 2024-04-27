@@ -3,7 +3,7 @@ import { AuthService } from '@/services/auth.service';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4300/api',
+  baseURL: 'https://api.mzhn.fun/api',
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
